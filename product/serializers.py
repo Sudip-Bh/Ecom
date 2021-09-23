@@ -12,22 +12,31 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model =  Product
         fields  = '__all__'
+class CategoryShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = "__all__"
+class BookShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        # fields = ('title','isbn','pages','price','stock','description','image','status','date_created')
+        exclude=('category',)
 
+class BooksSerialiszer(serializers.ModelSerializer):
+    category=CategoryShortSerializer()
+    class Meta:
+        model = Book
+        # fields = ('id','title','category',)
+        fields='__all__'
 
 class CategorySerializer(serializers.ModelSerializer):
-    books = serializers.StringRelatedField(
-        many=True,
-     )
-    # books=BooksSerialiszer(many=True,read_only=True)#book always should same as model name or related name       
+    # books =  BooksShortSerializer(many=True)
+    books=BookShortSerializer(many=True,read_only=True)#book always should same as model name or related name       
     class Meta:
         model = Category
         fields = '__all__'
 
-class BooksSerialiszer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField()
-    class Meta:
-        model = Book
-        fields = "__all__"
+
 
 
 
