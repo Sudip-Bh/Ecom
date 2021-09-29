@@ -1,7 +1,7 @@
-from product.models import Book, Category, ImageUpload,  Product
+from product.models import Category, ImageUpload, OrderItem,  Product
 from rest_framework.views import APIView  
 from rest_framework.parsers import FormParser,  MultiPartParser
-from .serializers import (BooksListSerialiszer, BooksSerialiszer, ImageUploadSerializer,
+from .serializers import ( ImageUploadSerializer, OrderItemSerializer,
                             ProductSerializer,
                             CategorySerializer
                         )
@@ -31,18 +31,6 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-class BookListView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class=BooksListSerialiszer
-
-class BookCreateView(generics.CreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class=BooksSerialiszer
-
-class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class=BooksSerialiszer
-
 class CategoryListView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class=CategorySerializer
@@ -56,8 +44,6 @@ class ImageUploadListView(generics.ListCreateAPIView):
     queryset = ImageUpload.objects.all()
     serializer_class=ImageUploadSerializer
 
-
-
-
-
-
+class OrderItemView(generics.ListCreateAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
