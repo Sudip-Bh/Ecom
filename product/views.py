@@ -1,28 +1,24 @@
-from django.db import models
-from product.models import Category, ImageUpload, OrderItem,  Product,Order
+from product.models import Category, ImageUpload, OrderItem, Product, Order
 from rest_framework.views import APIView  
 from rest_framework.parsers import FormParser,  MultiPartParser
-from .serializers import ( AddToCartSerializer, DeleteCartSerializer, ImageUploadSerializer, ListCartSerializer, OrderItemSerializer, OrderSerializer,
-                            ProductSerializer,
-                            CategorySerializer
+from .serializers import ( AddToCartSerializer, ImageUploadSerializer,
+                             ListCartSerializer, OrderItemSerializer, OrderSerializer, ProductSerializer, CategorySerializer
                         )
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
-from nepali_unicode_converter.convert import Converter
 
 # Create your views here.
 class ImageUploadView(APIView):
     parsers = (FormParser,MultiPartParser)
 
     def post(self,request,*args,**kwargs):
-        file_seriailzer = ImageUploadSerializer(data=request.data)
-        if(file_seriailzer.is_valid()):
-            file_seriailzer.save()
-            return Response(file_seriailzer.data,status=status.HTTP_200_OK)
+        file_serializer = ImageUploadSerializer(data=request.data)
+        if(file_serializer.is_valid()):
+            file_serializer.save()
+            return Response(file_serializer.data,status=status.HTTP_200_OK)
         else:
-            return Response(file_seriailzer.errors,status=status.HTTP_400_BAD_REQUEST)
-
+            return Response(file_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 class ProductListView(generics.ListCreateAPIView):
     queryset = Product.objects.all() 
@@ -61,9 +57,9 @@ class CartUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = OrderItem.objects.all()
     serializer_class=ListCartSerializer
 
-class CartDeleteView(generics.DestroyAPIView):
-    queryset = OrderItem.objects.all()
-    serializer_class=DeleteCartSerializer
+# class CartDeleteView(generics.DestroyAPIView):
+#     queryset = OrderItem.objects.all()
+#     serializer_class=DeleteCartSerializer
 
 class OrderView(generics.ListCreateAPIView):
     queryset=Order.objects.all()

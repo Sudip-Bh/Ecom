@@ -1,4 +1,3 @@
-from django.core import validators
 from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.db.models.base import Model
@@ -7,12 +6,10 @@ from django.urls import reverse
 class ImageUpload(models.Model):
     file = models.FileField(default=None,blank=False,null=False,validators=[FileExtensionValidator(allowed_extensions=['jpg','png'])])
 
-# Create your models here.
 class Category(models.Model):
     title = models.CharField(max_length=255)
     
     def __str__(self):
-        # return '%d: %s' %(self.id,self.title)
         return '%d: %s' % (self.id, self.title)
 
 class Product(models.Model):
@@ -26,7 +23,7 @@ class Product(models.Model):
     date_created = models.DateField(auto_now_add=True)
     image = models.JSONField(blank=True,null=True)
     discount = models.FloatField(null=True,blank=True)
-    slug = models.SlugField(null=True,blank=True)
+    # slug = models.SlugField(null=True,blank=True)
 
     class Meta:
         ordering = ['-date_created']
@@ -34,8 +31,8 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.product_tag}{self.name}'
 
-    def get_absolute_url(self):
-        return reverse("product:products", kwargs={"slug": self.slug})
+    # def get_absolute_url(self):
+    #     return reverse("product:products", kwargs={"slug": self.slug})
     
 
 class OrderItem(models.Model):
