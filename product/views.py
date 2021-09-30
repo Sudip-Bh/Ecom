@@ -1,7 +1,8 @@
-from product.models import Category, ImageUpload, OrderItem,  Product
+from django.db import models
+from product.models import Category, ImageUpload, OrderItem,  Product,Order
 from rest_framework.views import APIView  
 from rest_framework.parsers import FormParser,  MultiPartParser
-from .serializers import ( ImageUploadSerializer, OrderItemSerializer,
+from .serializers import ( AddToCartSerializer, DeleteCartSerializer, ImageUploadSerializer, ListCartSerializer, OrderItemSerializer, OrderSerializer,
                             ProductSerializer,
                             CategorySerializer
                         )
@@ -44,6 +45,26 @@ class ImageUploadListView(generics.ListCreateAPIView):
     queryset = ImageUpload.objects.all()
     serializer_class=ImageUploadSerializer
 
-class OrderItemView(generics.ListCreateAPIView):
+class OrderItemView(generics.RetrieveUpdateDestroyAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
+
+class CartAddView(generics.CreateAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class=AddToCartSerializer
+
+class CartListView(generics.ListAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class=ListCartSerializer
+
+class CartUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class=ListCartSerializer
+
+class CartDeleteView(generics.DestroyAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class=DeleteCartSerializer
+
+class OrderView(generics.ListCreateAPIView):
+    queryset=Order.objects.all()
+    serializer_class=OrderSerializer

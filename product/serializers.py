@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
-from .models import ImageUpload, OrderItem, Product,Category
+from .models import ImageUpload, Order, OrderItem, Product,Category
 # from .serializers import CategorySerializer
 
 class ImageUploadSerializer(serializers.ModelSerializer):
@@ -25,13 +25,40 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    item_price = serializers.IntegerField(source="get_total_item_price")
+    # item_price = serializers.IntegerField(source="get_total_item_price")
     
     class Meta:
         model = OrderItem
-        fields = "__all__"
+        fields = ('product','quantity',)
+class OrderItemSerializer(serializers.ModelSerializer):
+    # item_price = serializers.IntegerField(source="get_total_item_price")
+    
+    class Meta:
+        model = OrderItem
+        fields = ('quantity',)
 
 
+
+class AddToCartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields=('quantity','product',)
+
+class ListCartSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+    class Meta:
+        model = OrderItem
+        fields='__all__'
+
+class DeleteCartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields='__all__'
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Order
+        fields='__all__'  
 
 
 
